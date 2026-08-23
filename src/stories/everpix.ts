@@ -17,7 +17,10 @@ export const everpix: Story = {
   id: 'everpix',
   title: 'Everpix: a good product is not a business',
   subtitle: 'Fourteen months of a company that worked, measured, and closed anyway',
-  source: 'exploresource',
+  // The process in the sirmmo/Everpix-Intelligence config that yields the
+  // monthly frame with the derived columns on it. A story is written against a
+  // config repo, so naming its process here is the story's job, not the host's.
+  source: 'enhance',
   date: 'uatu:date',
 
   standfirst: [
