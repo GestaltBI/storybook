@@ -69,10 +69,10 @@ Resolve the story and that claim is evaluated against the current frame. If it
 fails, the chapter comes back `fail`, with the offending periods named, and the
 host shows it *next to the paragraph that made the claim*.
 
-The bundled Everpix story is the demonstration: its margin chapter asserts that
-revenue covered infrastructure, and against Everpix's real numbers that check
-**fails every month**. The failure is the point of the chapter — and there is a
-test pinning it.
+The [Everpix report](https://github.com/sirmmo/Everpix-Intelligence/blob/master/story.json)
+is the demonstration: its margin chapter asserts that revenue covered
+infrastructure, and against Everpix's own published numbers that check **fails
+every month**. The failure is the point of the chapter.
 
 ## Writing a story
 
