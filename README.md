@@ -94,6 +94,21 @@ Two rules the resolver enforces so a story cannot quietly mislead:
 `growth` from a base of zero returns null rather than infinity, for the same
 reason.
 
+## Knowing whether a story fits
+
+A story is written against one dataset's vocabulary. Point it at another and
+nothing throws — figures come back absent, checks skip — but the result is a
+page of em dashes that reads like a bug. Ask first:
+
+```ts
+import { missingColumns } from '@gestaltbi/storybook';
+
+const missing = missingColumns(story, structure.columns.map((c) => c.column));
+if (missing.length) {
+  // "this story was written for a different dataset"
+}
+```
+
 ## The Everpix story
 
 `everpix` reads the fourteen months

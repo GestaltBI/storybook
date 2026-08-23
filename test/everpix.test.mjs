@@ -120,3 +120,18 @@ describe('the Everpix story', () => {
     assert.match(product.prose[0], /78%/);
   });
 });
+
+test('a story declares the columns it needs', async () => {
+  const { requiredColumns, missingColumns } = await import('../dist/index.js');
+  const needed = requiredColumns(everpix);
+  assert.ok(needed.includes('everpix:recognized_revenue'));
+  assert.ok(needed.includes('everpix:aws_cost'));
+  assert.ok(needed.includes('uatu:date'));
+
+  // Everything the story reads is described by the structure it was written for.
+  const declared = structure.columns.map((c) => c.column);
+  assert.deepEqual(missingColumns(everpix, declared), []);
+
+  // Pointed at an unrelated dataset it says so, rather than rendering dashes.
+  assert.ok(missingColumns(everpix, ['smartbi:customer']).length > 5);
+});
