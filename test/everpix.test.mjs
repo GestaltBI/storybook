@@ -12,10 +12,10 @@ const structure = {
   columns: [
     { column: 'uatu:date', type: 'date', tags: ['uatu:dimension', 'uatu:dimension:time'] },
     ...[
-      'everpix:users', 'everpix:subscribers', 'everpix:new_users', 'everpix:recognized_revenue',
-      'everpix:aws_cost', 'everpix:storage_tib', 'everpix:new_photos', 'everpix:sub_rate',
-      'everpix:sub_rate_10k', 'everpix:free_active', 'everpix:sub_active', 'everpix:press',
-      'everpix:calc:margin_accrual', 'everpix:calc:cum_recognized', 'everpix:calc:cum_aws',
+      'everpix:users:last', 'everpix:subscribers:last', 'everpix:new_users:sum', 'everpix:recognized_revenue:sum',
+      'everpix:aws_cost:sum', 'everpix:storage_tib:last', 'everpix:new_photos:sum', 'everpix:sub_rate:avg',
+      'everpix:sub_rate_10k:avg', 'everpix:free_active:avg', 'everpix:sub_active:avg', 'everpix:press:sum',
+      'everpix:calc:margin_accrual:sum', 'everpix:calc:cum_recognized', 'everpix:calc:cum_aws',
       'everpix:calc:cum_margin',
     ].map((column) => ({ column, type: 'number', tags: ['uatu:measure'] })),
   ],
@@ -39,19 +39,19 @@ const frame = () => {
     cumA += cost;
     return {
       'uatu:date': new Date(Date.UTC(2012, 8 + i, 1)).toISOString().slice(0, 10),
-      'everpix:users': 3800 + i * 4000,
-      'everpix:subscribers': 200 + i * 480,
-      'everpix:new_users': 2000 + i * 200,
-      'everpix:recognized_revenue': revenue,
-      'everpix:aws_cost': cost,
-      'everpix:storage_tib': 8 + i * 16, // a ratchet
-      'everpix:new_photos': 9 + i * 8,
-      'everpix:sub_rate': 0.1 + i * 0.001,
-      'everpix:sub_rate_10k': 0.78,
-      'everpix:free_active': 0.06,
-      'everpix:sub_active': 0.78,
-      'everpix:press': i === 0 ? 3 : 1,
-      'everpix:calc:margin_accrual': revenue - cost,
+      'everpix:users:last': 3800 + i * 4000,
+      'everpix:subscribers:last': 200 + i * 480,
+      'everpix:new_users:sum': 2000 + i * 200,
+      'everpix:recognized_revenue:sum': revenue,
+      'everpix:aws_cost:sum': cost,
+      'everpix:storage_tib:last': 8 + i * 16, // a ratchet
+      'everpix:new_photos:sum': 9 + i * 8,
+      'everpix:sub_rate:avg': 0.1 + i * 0.001,
+      'everpix:sub_rate_10k:avg': 0.78,
+      'everpix:free_active:avg': 0.06,
+      'everpix:sub_active:avg': 0.78,
+      'everpix:press:sum': i === 0 ? 3 : 1,
+      'everpix:calc:margin_accrual:sum': revenue - cost,
       'everpix:calc:cum_recognized': cumR,
       'everpix:calc:cum_aws': cumA,
       'everpix:calc:cum_margin': cumR - cumA,
@@ -124,8 +124,8 @@ describe('the Everpix story', () => {
 test('a story declares the columns it needs', async () => {
   const { requiredColumns, missingColumns } = await import('../dist/index.js');
   const needed = requiredColumns(everpix);
-  assert.ok(needed.includes('everpix:recognized_revenue'));
-  assert.ok(needed.includes('everpix:aws_cost'));
+  assert.ok(needed.includes('everpix:recognized_revenue:sum'));
+  assert.ok(needed.includes('everpix:aws_cost:sum'));
   assert.ok(needed.includes('uatu:date'));
 
   // Everything the story reads is described by the structure it was written for.

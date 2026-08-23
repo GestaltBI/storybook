@@ -33,9 +33,9 @@ export const everpix: Story = {
       id: 'product',
       title: 'The product worked',
       figures: [
-        { id: 'sub_active', label: 'Subscribers active monthly', measure: 'everpix:sub_active', reduce: 'avg', format: 'percent', note: 'Share of paying users opening the app in a 30-day window' },
-        { id: 'free_active', label: 'Free users active monthly', measure: 'everpix:free_active', reduce: 'avg', format: 'percent' },
-        { id: 'photos', label: 'Photos synced', measure: 'everpix:new_photos', reduce: 'sum', format: 'compact', unit: 'M' },
+        { id: 'sub_active', label: 'Subscribers active monthly', measure: 'everpix:sub_active:avg', reduce: 'avg', format: 'percent', note: 'Share of paying users opening the app in a 30-day window' },
+        { id: 'free_active', label: 'Free users active monthly', measure: 'everpix:free_active:avg', reduce: 'avg', format: 'percent' },
+        { id: 'photos', label: 'Photos synced', measure: 'everpix:new_photos:sum', reduce: 'sum', format: 'compact', unit: 'M' },
       ],
       prose: [
         'Start where the doubt usually is: did anybody want it? On average {{sub_active}} of paying subscribers opened Everpix in any given month. That is not a normal consumer number — it is the number of a utility, something people rely on rather than visit.',
@@ -49,8 +49,8 @@ export const everpix: Story = {
           id: 'subscribers-more-engaged',
           type: 'covers',
           label: 'Subscribers were more active than free users, every month',
-          measure: 'everpix:sub_active',
-          by: 'everpix:free_active',
+          measure: 'everpix:sub_active:avg',
+          by: 'everpix:free_active:avg',
         },
       ],
     },
@@ -59,10 +59,10 @@ export const everpix: Story = {
       id: 'funnel',
       title: 'Growth was real. Conversion was not.',
       figures: [
-        { id: 'users', label: 'Registered users', measure: 'everpix:users', reduce: 'last', format: 'integer' },
-        { id: 'subs', label: 'Subscribers', measure: 'everpix:subscribers', reduce: 'last', format: 'integer' },
-        { id: 'rate', label: 'Overall conversion', measure: 'everpix:sub_rate', reduce: 'last', format: 'percent' },
-        { id: 'rate10k', label: 'Conversion, 10,000+ photo libraries', measure: 'everpix:sub_rate_10k', reduce: 'avg', format: 'percent', note: 'The people the product was built for' },
+        { id: 'users', label: 'Registered users', measure: 'everpix:users:last', reduce: 'last', format: 'integer' },
+        { id: 'subs', label: 'Subscribers', measure: 'everpix:subscribers:last', reduce: 'last', format: 'integer' },
+        { id: 'rate', label: 'Overall conversion', measure: 'everpix:sub_rate:avg', reduce: 'last', format: 'percent' },
+        { id: 'rate10k', label: 'Conversion, 10,000+ photo libraries', measure: 'everpix:sub_rate_10k:avg', reduce: 'avg', format: 'percent', note: 'The people the product was built for' },
       ],
       prose: [
         'The top of the funnel filled up: {{users}} registered users by the end. The bottom did not. {{subs}} of them paid — a conversion rate of {{rate}}.',
@@ -73,8 +73,8 @@ export const everpix: Story = {
       panel: {
         kind: 'series',
         series: [
-          { measure: 'everpix:users', label: 'Registered users', type: 'area' },
-          { measure: 'everpix:subscribers', label: 'Subscribers', type: 'area' },
+          { measure: 'everpix:users:last', label: 'Registered users', type: 'area' },
+          { measure: 'everpix:subscribers:last', label: 'Subscribers', type: 'area' },
         ],
       },
       checks: [
@@ -82,14 +82,14 @@ export const everpix: Story = {
           id: 'power-users-convert',
           type: 'ratio_bounds',
           label: 'Conversion among large libraries stayed above 50%',
-          measure: 'everpix:sub_rate_10k',
+          measure: 'everpix:sub_rate_10k:avg',
           min: 0.5,
         },
         {
           id: 'users-only-grow',
           type: 'monotonic',
           label: 'Registered users never fell',
-          measure: 'everpix:users',
+          measure: 'everpix:users:last',
           direction: 'increasing',
         },
       ],
@@ -99,9 +99,9 @@ export const everpix: Story = {
       id: 'storage',
       title: 'Storage is a ratchet',
       figures: [
-        { id: 'storage', label: 'Storage under management', measure: 'everpix:storage_tib', reduce: 'last', format: 'number', unit: 'TiB' },
-        { id: 'storage_growth', label: 'Growth over the period', measure: 'everpix:storage_tib', reduce: 'growth', format: 'percent' },
-        { id: 'aws', label: 'Infrastructure cost, total', measure: 'everpix:aws_cost', reduce: 'sum', format: 'currency' },
+        { id: 'storage', label: 'Storage under management', measure: 'everpix:storage_tib:last', reduce: 'last', format: 'number', unit: 'TiB' },
+        { id: 'storage_growth', label: 'Growth over the period', measure: 'everpix:storage_tib:last', reduce: 'growth', format: 'percent' },
+        { id: 'aws', label: 'Infrastructure cost, total', measure: 'everpix:aws_cost:sum', reduce: 'sum', format: 'currency' },
       ],
       prose: [
         'Here is the mechanic that decided the outcome. Everpix promised to keep your photos. Photos are not consumed and returned — they accumulate. Storage under management reached {{storage}} TiB, up {{storage_growth}} over the period, and it never once went down.',
@@ -112,8 +112,8 @@ export const everpix: Story = {
       panel: {
         kind: 'series',
         series: [
-          { measure: 'everpix:storage_tib', label: 'Storage (TiB)', type: 'area', axis: 0 },
-          { measure: 'everpix:aws_cost', label: 'Infrastructure cost', type: 'line', axis: 1 },
+          { measure: 'everpix:storage_tib:last', label: 'Storage (TiB)', type: 'area', axis: 0 },
+          { measure: 'everpix:aws_cost:sum', label: 'Infrastructure cost', type: 'line', axis: 1 },
         ],
       },
       checks: [
@@ -121,7 +121,7 @@ export const everpix: Story = {
           id: 'storage-never-falls',
           type: 'monotonic',
           label: 'Storage under management never fell',
-          measure: 'everpix:storage_tib',
+          measure: 'everpix:storage_tib:last',
           direction: 'increasing',
         },
       ],
@@ -131,9 +131,9 @@ export const everpix: Story = {
       id: 'margin',
       title: 'Revenue never caught cost',
       figures: [
-        { id: 'revenue', label: 'Recognised revenue', measure: 'everpix:recognized_revenue', reduce: 'sum', format: 'currency' },
-        { id: 'cost', label: 'Infrastructure cost', measure: 'everpix:aws_cost', reduce: 'sum', format: 'currency' },
-        { id: 'margin', label: 'Gross margin over infrastructure', measure: 'everpix:calc:margin_accrual', reduce: 'sum', format: 'currency', note: 'Before a single salary' },
+        { id: 'revenue', label: 'Recognised revenue', measure: 'everpix:recognized_revenue:sum', reduce: 'sum', format: 'currency' },
+        { id: 'cost', label: 'Infrastructure cost', measure: 'everpix:aws_cost:sum', reduce: 'sum', format: 'currency' },
+        { id: 'margin', label: 'Gross margin over infrastructure', measure: 'everpix:calc:margin_accrual:sum', reduce: 'sum', format: 'currency', note: 'Before a single salary' },
       ],
       prose: [
         'Put the two sides together. {{revenue}} recognised against {{cost}} of infrastructure, for a gross margin of {{margin}} across fourteen months.',
@@ -144,9 +144,9 @@ export const everpix: Story = {
       panel: {
         kind: 'series',
         series: [
-          { measure: 'everpix:recognized_revenue', label: 'Recognised revenue', type: 'bar' },
-          { measure: 'everpix:aws_cost', label: 'Infrastructure cost', type: 'bar' },
-          { measure: 'everpix:calc:margin_accrual', label: 'Gross margin', type: 'line' },
+          { measure: 'everpix:recognized_revenue:sum', label: 'Recognised revenue', type: 'bar' },
+          { measure: 'everpix:aws_cost:sum', label: 'Infrastructure cost', type: 'bar' },
+          { measure: 'everpix:calc:margin_accrual:sum', label: 'Gross margin', type: 'line' },
         ],
       },
       checks: [
@@ -154,14 +154,14 @@ export const everpix: Story = {
           id: 'revenue-covers-cost',
           type: 'covers',
           label: 'Revenue covered infrastructure, every month',
-          measure: 'everpix:recognized_revenue',
-          by: 'everpix:aws_cost',
+          measure: 'everpix:recognized_revenue:sum',
+          by: 'everpix:aws_cost:sum',
         },
         {
           id: 'margin-positive',
           type: 'sign',
           label: 'Gross margin over infrastructure was positive',
-          measure: 'everpix:calc:margin_accrual',
+          measure: 'everpix:calc:margin_accrual:sum',
           expect: '>0',
         },
       ],
@@ -173,7 +173,7 @@ export const everpix: Story = {
       figures: [
         { id: 'cum_margin', label: 'Cumulative margin', measure: 'everpix:calc:cum_margin', reduce: 'last', format: 'currency' },
         { id: 'months', label: 'Months observed', reduce: 'count', format: 'integer' },
-        { id: 'press', label: 'Press articles', measure: 'everpix:press', reduce: 'sum', format: 'integer' },
+        { id: 'press', label: 'Press articles', measure: 'everpix:press:sum', reduce: 'sum', format: 'integer' },
       ],
       prose: [
         'Over {{months}} months the cumulative margin over infrastructure reached {{cum_margin}}. {{press}} press articles were written. Both numbers are real, and only one of them pays for storage.',
