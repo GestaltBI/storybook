@@ -1,0 +1,61 @@
+{
+  "id": "quarter",
+  "title": "A quarter of trading",
+  "subtitle": "Three months, and what they cost",
+  "source": "clean",
+  "date": "month",
+  "standfirst": [
+    "Everything below is computed from the data loaded right now, and every claim is checked against it."
+  ],
+  "chapters": [
+    {
+      "id": "takings",
+      "title": "What came in",
+      "figures": [
+        { "id": "total", "label": "Revenue", "measure": "revenue", "reduce": "sum", "format": "currency" },
+        { "id": "growth", "label": "Growth", "measure": "revenue", "reduce": "growth", "format": "percent" }
+      ],
+      "prose": ["Revenue totalled {{total}}, up {{growth}} across the quarter."],
+      "takeaway": "The quarter grew.",
+      "panel": { "kind": "figures" },
+      "checks": [
+        {
+          "id": "revenue-rises",
+          "type": "monotonic",
+          "label": "Revenue rose every month",
+          "measure": "revenue",
+          "direction": "increasing"
+        }
+      ]
+    },
+    {
+      "id": "margin",
+      "title": "What it cost",
+      "figures": [{ "id": "cost", "label": "Cost", "measure": "cost", "reduce": "sum", "format": "currency" }],
+      "prose": ["Against {{cost}} of cost."],
+      "panel": {
+        "kind": "series",
+        "series": [
+          { "measure": "revenue", "label": "Revenue" },
+          { "measure": "cost", "label": "Cost", "type": "bar" }
+        ]
+      },
+      "checks": [
+        {
+          "id": "revenue-covers-cost",
+          "type": "covers",
+          "label": "Revenue covered cost, every month",
+          "measure": "revenue",
+          "by": "cost"
+        }
+      ]
+    },
+    {
+      "id": "mix",
+      "title": "Where it came from",
+      "prose": ["By region, largest first."],
+      "panel": { "kind": "pivot", "options": { "rows": ["region"], "measure": "revenue", "type": "sum", "totals": true } }
+    }
+  ],
+  "credits": [{ "label": "Your data", "href": "https://example.com" }]
+}

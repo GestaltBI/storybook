@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { resolveStory, formatFigure, interpolate, ABSENT, everpix } from '../dist/index.js';
+import { resolveStory, formatFigure, interpolate, ABSENT } from '../dist/index.js';
 import { StructureDirectory } from '@gestaltbi/stream';
 
 const structure = {
@@ -206,14 +206,22 @@ test('a story that asserts nothing has no status to report', () => {
 });
 
 test('an empty frame resolves rather than throwing', () => {
-  const out = resolveStory(everpix, [], ctx());
+  const story = {
+    id: 's', title: 'T',
+    chapters: [{
+      id: 'c', title: 'C', prose: ['{{sum}} over {{rows}}'],
+      figures: [
+        { id: 'sum', label: 'S', measure: 'revenue', reduce: 'sum' },
+        { id: 'rows', label: 'R', reduce: 'count' },
+      ],
+    }],
+  };
+  const out = resolveStory(story, [], ctx());
   assert.equal(out.n, 0);
-  assert.equal(out.chapters.length, everpix.chapters.length);
   // Everything measured is absent — but a *count* of an empty frame is a real
   // zero, not a gap, and must not be dressed up as one.
-  const measured = out.chapters.flatMap((c) => c.figures).filter((f) => f.reduce !== 'count');
-  assert.ok(measured.length > 0);
-  assert.ok(measured.every((f) => f.formatted === ABSENT));
-  const counts = out.chapters.flatMap((c) => c.figures).filter((f) => f.reduce === 'count');
-  assert.ok(counts.every((f) => f.value === 0 && f.formatted === '0'));
+  const [sum, rows] = out.chapters[0].figures;
+  assert.equal(sum.formatted, ABSENT);
+  assert.equal(rows.value, 0);
+  assert.equal(rows.formatted, '0');
 });

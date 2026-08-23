@@ -22,11 +22,12 @@ npm install @gestaltbi/storybook @gestaltbi/stream
 ## Usage
 
 ```ts
-import { resolveStory, everpix } from '@gestaltbi/storybook';
+import { resolveStory } from '@gestaltbi/storybook';
 import { StructureDirectory } from '@gestaltbi/stream';
 
+const story = await fetch('story.json').then((r) => r.json());
 const directory = new StructureDirectory(structure);
-const report = resolveStory(everpix, rows, {
+const report = resolveStory(story, rows, {
   columnDirectory: directory,
   opContext: { columnDirectory: directory, fetcher, getFilter: () => ({}) },
   locale: 'en',
@@ -109,15 +110,30 @@ if (missing.length) {
 }
 ```
 
-## The Everpix story
+## Where a story lives
 
-`everpix` reads the fourteen months
-[Everpix published](https://github.com/everpix/Everpix-Intelligence) when it
-shut down in November 2013: a photo service people loved, with retention most
-consumer startups would envy, that closed anyway. Six chapters — the product
-worked, the funnel leaked, storage is a ratchet, revenue never caught cost, what
-would have had to be true, and a last pass over what the numbers say about each
-other.
+**This package ships no stories.** A narrative is about one dataset — its
+columns, its period, its argument — so it belongs with that dataset, not in a
+library that knows nothing about either. Keeping one here would mean editing
+prose required a release of something else.
+
+So a story is a file next to the data it reads:
+
+```
+your-config-repo/
+  structure.json
+  processing.json
+  story.json      ← here
+```
+
+`examples/story.example.json` is a complete one to copy, and
+[sirmmo/Everpix-Intelligence](https://github.com/sirmmo/Everpix-Intelligence)
+is a real one: six chapters over the fourteen months Everpix published when it
+shut down, two of whose claims fail against its own numbers.
+
+Nothing about that file is special to the GestaltBI client. `resolveStory` takes
+a plain object, so any host can fetch one, resolve it, and render the result
+however it likes.
 
 ## Development
 
