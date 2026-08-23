@@ -62,14 +62,15 @@ export const everpix: Story = {
         { id: 'users', label: 'Registered users', measure: 'everpix:users:last', reduce: 'last', format: 'integer' },
         { id: 'subs', label: 'Subscribers', measure: 'everpix:subscribers:last', reduce: 'last', format: 'integer' },
         { id: 'rate', label: 'Overall conversion', measure: 'everpix:sub_rate:avg', reduce: 'last', format: 'percent' },
-        { id: 'rate10k', label: 'Conversion, 10,000+ photo libraries', measure: 'everpix:sub_rate_10k:avg', reduce: 'avg', format: 'percent', note: 'The people the product was built for' },
+        { id: 'rate10k_first', label: 'Conversion, 10,000+ photo libraries — at the start', measure: 'everpix:sub_rate_10k:avg', reduce: 'first', format: 'percent', note: 'The people the product was built for' },
+        { id: 'rate10k_last', label: '…and at the end', measure: 'everpix:sub_rate_10k:avg', reduce: 'last', format: 'percent' },
       ],
       prose: [
         'The top of the funnel filled up: {{users}} registered users by the end. The bottom did not. {{subs}} of them paid — a conversion rate of {{rate}}.',
-        'But that average hides the finding that mattered. Among users with libraries over ten thousand photos — the people whose problem Everpix actually solved — conversion averaged {{rate10k}}. The product converted its audience. It simply kept being handed the wrong audience.',
-        'Read those two rates together and the strategic error is legible: the money went into acquiring users in general, when the evidence said the business was in acquiring one specific kind.',
+        'That average hides the finding that mattered. Among users with libraries over ten thousand photos — the people whose problem Everpix actually solved — conversion ran at {{rate10k_first}} in the first month measured. Those users converted better than the average user every single month of the company’s life.',
+        'But watch what happens to that number: by the end it had fallen to {{rate10k_last}}. The product kept converting its own audience, and kept being handed less and less of it. Growth was diluting the funnel, not filling it.',
       ],
-      takeaway: 'Everpix did not have a conversion problem. It had a targeting problem wearing a conversion problem’s clothes.',
+      takeaway: 'Everpix did not have a conversion problem. It had a targeting problem that got worse the faster it grew.',
       panel: {
         kind: 'series',
         series: [
@@ -79,11 +80,14 @@ export const everpix: Story = {
       },
       checks: [
         {
-          id: 'power-users-convert',
-          type: 'ratio_bounds',
-          label: 'Conversion among large libraries stayed above 50%',
+          // The claim the chapter actually makes. "Stayed above 50%" was the
+          // first version of this check, and the data threw it out: conversion
+          // among large libraries fell through 50% three times.
+          id: 'power-users-convert-better',
+          type: 'covers',
+          label: 'Large libraries converted better than users overall, every month',
           measure: 'everpix:sub_rate_10k:avg',
-          min: 0.5,
+          by: 'everpix:sub_rate:avg',
         },
         {
           id: 'users-only-grow',
