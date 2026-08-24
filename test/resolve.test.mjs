@@ -225,3 +225,53 @@ test('an empty frame resolves rather than throwing', () => {
   assert.equal(rows.value, 0);
   assert.equal(rows.formatted, '0');
 });
+
+// ------------------------------------------------------------ pivot format ---
+
+const rateStructure = {
+  columns: [
+    { column: 'month', type: 'date', tags: ['uatu:dimension:time'] },
+    { column: 'cat', type: 'string', tags: ['uatu:dimension'] },
+    { column: 'hit', type: 'number', tags: ['uatu:measure'] },
+    { column: 'all', type: 'number', tags: ['uatu:measure'] },
+  ],
+};
+const rateRows = [
+  { month: '2020-01-01', cat: 'A', hit: 1, all: 4 },
+  { month: '2020-01-01', cat: 'B', hit: 3, all: 4 },
+];
+const rateStory = (format) => ({
+  id: 's',
+  title: 'S',
+  date: 'month',
+  chapters: [
+    {
+      id: 'c',
+      title: 'C',
+      prose: [],
+      panel: {
+        kind: 'pivot',
+        format,
+        options: { rows: ['cat'], measure: 'rate', type: 'ratio', numerator: 'hit', denominator: 'all' },
+      },
+    },
+  ],
+});
+const ratePanel = (format) =>
+  resolveStory(rateStory(format), rateRows, { columnDirectory: new StructureDirectory(rateStructure) }).chapters[0].panel;
+
+test('a pivot panel carries how its cells should be printed', () => {
+  // A rate rendered raw is 0.1881408827463219, which nobody can read.
+  assert.equal(ratePanel('percent').format, 'percent');
+  assert.equal(ratePanel(undefined).format, undefined, 'absent when the story does not say');
+});
+
+test('the measure names the value column, so a host can label it', () => {
+  const panel = ratePanel('percent');
+  assert.deepEqual(panel.columns, ['rate']);
+  assert.equal(
+    panel.rows.find((r) => r.cat === 'B').rate,
+    0.75,
+    'a group’s rate is the rate of the group, not the average of its members’ rates',
+  );
+});

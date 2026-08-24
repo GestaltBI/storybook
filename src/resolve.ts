@@ -166,6 +166,7 @@ function resolvePanel(
         rows: out,
         omitted: op.getOmitted(),
         rowKey: panel.options.rows?.[0] ?? '',
+        format: panel.format,
       };
     }
 

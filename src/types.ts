@@ -37,7 +37,7 @@ export interface SeriesSpec {
 export type Panel =
   | { kind: 'figures' }
   | { kind: 'series'; date?: string; series: SeriesSpec[]; stack?: boolean }
-  | { kind: 'pivot'; options: PivotOptions }
+  | { kind: 'pivot'; options: PivotOptions; format?: FigureFormat }
   | { kind: 'correlate'; options: CorrelateOptions }
   | { kind: 'table'; columns: Array<{ column: string; label?: string; format?: FigureFormat }> };
 
@@ -91,7 +91,15 @@ export type ResolvedPanel =
       series: Array<{ label: string; type: string; axis: number; data: Array<number | null> }>;
       stack: boolean;
     }
-  | { kind: 'pivot'; columns: string[]; rows: any[]; omitted: number; rowKey: string }
+  | {
+      kind: 'pivot';
+      columns: string[];
+      rows: any[];
+      omitted: number;
+      rowKey: string;
+      /** How the cells should be printed. A rate is unreadable raw. */
+      format?: FigureFormat;
+    }
   | { kind: 'correlate'; associations: any[] }
   | { kind: 'table'; columns: Array<{ column: string; label: string; format?: FigureFormat }>; rows: any[] };
 
