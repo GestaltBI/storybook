@@ -8,6 +8,10 @@ import type { Check, CorrelateOptions, PivotOptions, Verdict } from '@gestaltbi/
  */
 export type Reduce = 'last' | 'first' | 'sum' | 'avg' | 'min' | 'max' | 'delta' | 'growth' | 'count';
 
+/**
+ * How a number should be printed. `currency` and the story's locale decide
+ * the symbol and the rounding.
+ */
 export type FigureFormat = 'currency' | 'percent' | 'number' | 'compact' | 'integer' | 'date';
 
 /** A number the prose is allowed to quote. */
@@ -25,6 +29,9 @@ export interface FigureSpec {
   note?: string;
 }
 
+/**
+ * One line or bar on a `series` panel.
+ */
 export interface SeriesSpec {
   measure: string;
   label: string;
@@ -41,6 +48,10 @@ export type Panel =
   | { kind: 'correlate'; options: CorrelateOptions }
   | { kind: 'table'; columns: Array<{ column: string; label?: string; format?: FigureFormat }> };
 
+/**
+ * One idea: what it says, the numbers it quotes, what is drawn beside it,
+ * and the claims it rests on.
+ */
 export interface Chapter {
   id: string;
   title: string;
@@ -61,6 +72,13 @@ export interface Chapter {
   checks?: Check[];
 }
 
+/**
+ * A report, as data.
+ *
+ * Everything needed to render one and nothing about how: the chapters in
+ * order, the process they read, and the column carrying time when the
+ * structure does not say.
+ */
 export interface Story {
   id: string;
   title: string;
@@ -77,12 +95,19 @@ export interface Story {
 
 // --------------------------------------------------------------- resolved ---
 
+/**
+ * A figure once it has met the data: the value, and the string to print.
+ */
 export interface Figure extends FigureSpec {
   value: number | null;
   /** Ready to print. Null values render as an em dash, never as zero. */
   formatted: string;
 }
 
+/**
+ * A panel with its data computed — still no markup, no colours, no
+ * components.
+ */
 export type ResolvedPanel =
   | { kind: 'figures'; figures: Figure[] }
   | {
@@ -103,6 +128,9 @@ export type ResolvedPanel =
   | { kind: 'correlate'; associations: any[] }
   | { kind: 'table'; columns: Array<{ column: string; label: string; format?: FigureFormat }>; rows: any[] };
 
+/**
+ * A chapter with its numbers in its sentences and its claims answered.
+ */
 export interface ResolvedChapter {
   id: string;
   title: string;
@@ -115,6 +143,9 @@ export interface ResolvedChapter {
   status: 'pass' | 'warn' | 'fail' | 'none';
 }
 
+/**
+ * The whole report, resolved against a frame and ready to render.
+ */
 export interface ResolvedStory {
   id: string;
   title: string;

@@ -13,7 +13,11 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "src", "README.md"],
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
   "engines": {
     "node": ">=20.19.0"
   },
@@ -22,7 +26,8 @@
     "clean": "rm -rf dist",
     "test": "npm run build && node --test test/*.test.mjs",
     "prepare": "npm run build",
-    "prepack": "npm run clean && npm run build"
+    "prepack": "npm run clean && npm run build",
+    "docs": "node tools/docs/build.mjs"
   },
   "peerDependencies": {
     "@gestaltbi/stream": ">=0.1.0"
@@ -40,5 +45,11 @@
   },
   "homepage": "https://github.com/GestaltBI/storybook",
   "bugs": "https://github.com/GestaltBI/storybook/issues",
-  "keywords": ["narrative", "data-storytelling", "report", "analytics", "gestaltbi"]
+  "keywords": [
+    "narrative",
+    "data-storytelling",
+    "report",
+    "analytics",
+    "gestaltbi"
+  ]
 }

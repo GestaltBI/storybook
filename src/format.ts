@@ -1,5 +1,8 @@
 import type { FigureFormat } from './types.js';
 
+/**
+ * Locale and currency for every number in a story.
+ */
 export interface FormatOptions {
   locale?: string;
   currency?: string;

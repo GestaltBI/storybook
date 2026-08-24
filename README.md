@@ -1,5 +1,7 @@
 # @gestaltbi/storybook
 
+**[Documentation →](https://gestaltbi.github.io/storybook/)**
+
 Interactive data narratives. Bind prose to analyses so a report explains itself
 from the data it runs on — and says where it no longer holds.
 
@@ -140,7 +142,13 @@ however it likes.
 ```sh
 npm install
 npm test          # builds, then runs the suite
+npm run docs      # regenerate docs/index.html
 ```
+
+The documentation page is one self-contained file. Its prose lives in
+`tools/docs/content.mjs`; the API reference is read out of `src/index.ts` by the
+TypeScript compiler at build time, so it cannot drift from what the package
+exports. GitHub Actions rebuilds and publishes it on every push to `master`.
 
 ## License
 

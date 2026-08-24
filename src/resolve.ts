@@ -21,6 +21,10 @@ import type {
   Story,
 } from './types.js';
 
+/**
+ * What a story needs beyond the rows: who can name its columns, what runs
+ * its panels, and how to print a number.
+ */
 export interface ResolveOptions extends FormatOptions {
   columnDirectory?: ColumnDirectory;
   /** Context handed to the stream ops a panel runs. */
